@@ -2,10 +2,10 @@
     <div class="resource">
         <h4>资源列表</h4>
         <ul class="title">
-            <li v-for="item of menu" @click="tab(item)">{{item.title}}</li>
+            <li v-for="(item,index) of menu" @click="tab(item)" :key="index">{{item.title}}</li>
         </ul>
         <ul class="info">
-            <li v-for="item of current">{{item}}</li>
+            <li v-for="(item,index) of current" :key="index" @click="changeData(item)">{{item.name}}</li>
         </ul>
     </div>
 </template>
@@ -17,20 +17,37 @@
                 menu:[
                     {
                         title: '降水降温类',
-                        arr: ["降水实况","温度实况","相对温度实况","降水预报","气温预报","分钟级降水","全国气压"]
+                        arr: [
+                            {
+                                name:"降水实况",
+                                api: 'js_sk',
+                                url: 'https://decisionappjson.tianqi.cn/js_data/china/precipitation1h.json',
+                            },
+                            {
+                                name:"温度实况",
+                                api: 'wd_sk',
+                                url: 'https://decisionappjson.tianqi.cn/js_data/china/balltemp.json'
+                            },
+                            {
+                                name:"气温预报",
+                                api: 'qw_yb',
+                                url: 'http://decision-171.tianqi.cn/outdata/china/YB024-wdmax.json'
+
+                            },
+                            ]
                     },
-                    {
-                        title: '雷达云图类',
-                        arr: ["降水实况","温度实况","相对温度实况",]
-                    },
-                    {
-                        title: '空气质量类',
-                        arr: ["降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况",]
-                    },
-                    {
-                        title: '预警及实景类',
-                        arr: ["降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况",]
-                    },
+                    // {
+                    //     title: '雷达云图类',
+                    //     arr: ["降水实况","温度实况","相对温度实况",]
+                    // },
+                    // {
+                    //     title: '空气质量类',
+                    //     arr: ["降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况",]
+                    // },
+                    // {
+                    //     title: '预警及实景类',
+                    //     arr: ["降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况",]
+                    // },
                 ],
                 current:[]
             }
@@ -38,6 +55,9 @@
         methods:{
             tab(item){
                 this.current = item.arr
+            },
+            changeData(data){
+                this.$store.dispatch('someAsyncTask',{data})
             }
         },
         mounted(){

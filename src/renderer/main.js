@@ -7,6 +7,8 @@ import store from './store'
 
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import './assets/lib/leaflet.js'
+import './assets/lib/leaflet.css'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios

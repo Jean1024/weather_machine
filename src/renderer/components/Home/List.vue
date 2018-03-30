@@ -2,7 +2,7 @@
     <div class="lists">
         <h2>播出列表</h2>
         <ul>
-            <li class="item" v-for="item in 6">
+            <li class="item" v-for="(item,index) of 6" :key="index">
                 <div class="index">
                     {{item}}
                 </div>
