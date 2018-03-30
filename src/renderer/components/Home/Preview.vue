@@ -34,7 +34,9 @@
         },
         methods:{
             crop(){
-                
+                TOOLS.shoot(()=>{
+                    this.$store.dispatch("refreshIMGS")
+                })
             }
         },
         mounted(){

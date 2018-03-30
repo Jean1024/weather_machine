@@ -2,12 +2,12 @@
     <div class="lists">
         <h2>播出列表</h2>
         <ul>
-            <li class="item" v-for="(item,index) of 6" :key="index">
+            <li class="item" v-for="(item,index) of imgs" :key="index">
                 <div class="index">
-                    {{item}}
+                    {{index}}
                 </div>
                 <div class="pic">
-                    <img src="../../assets/map.png" alt="">
+                    <img :src="item.img" alt="">
                 </div>
                 <div class="options">
                     <div>
@@ -40,21 +40,17 @@
                                 value: '联播',
                                 label: '联播'
                             },
-                            {
-                                value: '轮播',
-                                label: '轮播'
-                            },
                         ],
                         mode: '联播',
                         modeStatus:[]
-                    }
+                    },
             }
         },
-        methods:{
-
-        },
-        mounted(){
-
+        computed:{
+            imgs(){
+                console.log(this.$store.state.Preview.imgs.data)
+                return this.$store.state.Preview.imgs.data
+            }
         }
     }
 </script>
