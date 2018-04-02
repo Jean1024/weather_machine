@@ -8,7 +8,7 @@ function refresh() {
     imgs.forEach((item, index) => {
         const _path = path.join(imgDir, item)
         arr[index] = {
-            img: _path
+            img: "file:///" + _path
         }
     })
     return arr
