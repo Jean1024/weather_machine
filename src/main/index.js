@@ -23,7 +23,7 @@ function createWindow () {
     title: '气象全能机',
     webSecurity: false,
     webPreferences: { webSecurity: false },
-    // frame: false, //隐藏工具栏
+    frame: false, //隐藏工具栏
     // width: 1000
   })
   mainWindow.maximize()

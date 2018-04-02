@@ -13,6 +13,7 @@
             return {
                 tip: '截屏',
                 msg: 'Lorem',
+                box: {}
             }
         },
         computed:{
@@ -34,7 +35,8 @@
         },
         methods:{
             crop(){
-                TOOLS.shoot(()=>{
+                const _this = this
+                TOOLS.shoot(_this.box,()=>{
                     this.$store.dispatch("refreshIMGS")
                 })
             }
@@ -44,6 +46,13 @@
             _this.map = L.map('map').setView([39.9042, 116.4], 5);
             _this.group = L.layerGroup()
             L.tileLayer(baseUrl).addTo(_this.map);
+            const ele = document.querySelector('.preview')
+            this.box = {
+                x: ele.offsetLeft,
+                y: ele.offsetTop,
+                width: ele.clientWidth,
+                height: ele.clientHeight
+            }
         }
     }
 </script>

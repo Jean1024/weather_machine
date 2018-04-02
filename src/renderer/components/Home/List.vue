@@ -48,7 +48,6 @@
         },
         computed:{
             imgs(){
-                console.log(this.$store.state.Preview.imgs.data)
                 return this.$store.state.Preview.imgs.data
             }
         }

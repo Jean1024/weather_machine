@@ -48,7 +48,7 @@ function getTime() {
     var random = ~~(Math.random() * 1000)
     return '' + y + m + d + h + M + s + random
 }
-function shoot(cb) {
+function shoot(obj,cb) {
     const thumbSize = determineScreenShotSize()
     let options = { types: ['screen'], thumbnailSize: thumbSize }
     desktopCapturer.getSources(options, function (error, sources) {
@@ -57,7 +57,9 @@ function shoot(cb) {
             const source = sources[0]
             const _t = getTime()
             const screenshotPath = path.join(imgDir, _t + '.png')
-            fs.writeFile(screenshotPath, source.thumbnail.toPng(), function (error) {
+            let image1 = source.thumbnail
+            image1 = image1.crop(obj).toPNG([])
+            fs.writeFile(screenshotPath, image1, function (error) {
                 if (error) alert('保存图片出错')
                 // shell.openExternal('file://' + screenshotPath)
                 // shell.showItemInFolder(screenshotPath)
@@ -70,6 +72,8 @@ function shoot(cb) {
 function determineScreenShotSize() {
     const screenSize = electronScreen.getPrimaryDisplay().workAreaSize
     const maxDimension = Math.max(screenSize.width, screenSize.height)
+    console.log(screenSize)
+    console.log(maxDimension)
     return {
         width: maxDimension * window.devicePixelRatio,
         height: maxDimension * window.devicePixelRatio
