@@ -24,6 +24,7 @@ function createWindow () {
     webSecurity: false,
     webPreferences: { webSecurity: false },
     frame: false, //隐藏工具栏
+    fullscreen: true,
     // width: 1000
   })
   mainWindow.maximize()

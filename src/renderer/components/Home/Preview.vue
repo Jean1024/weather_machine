@@ -78,11 +78,12 @@
             // 获取预览窗口大小和位置，为采取图片准备
             const ele = document.querySelector('.preview')
             this.box = {
-                x: ele.offsetLeft,
-                y: ele.offsetTop,
-                width: ele.clientWidth,
-                height: ele.clientHeight
+                x: ele.offsetLeft*window.devicePixelRatio,
+                y: ele.offsetTop*window.devicePixelRatio,
+                width: ele.clientWidth*window.devicePixelRatio,
+                height: ele.clientHeight*window.devicePixelRatio
             }
+            console.log(this.box)
         }
     }
 </script>

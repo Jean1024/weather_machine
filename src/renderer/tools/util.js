@@ -74,8 +74,6 @@ function shoot(obj,cb) {
 function determineScreenShotSize() {
     const screenSize = electronScreen.getPrimaryDisplay().workAreaSize
     const maxDimension = Math.max(screenSize.width, screenSize.height)
-    console.log(screenSize)
-    console.log(maxDimension)
     return {
         width: maxDimension * window.devicePixelRatio,
         height: maxDimension * window.devicePixelRatio
