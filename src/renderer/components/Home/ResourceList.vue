@@ -7,6 +7,7 @@
         <ul class="info">
             <li v-for="(item,index) of current" :key="index" @click="changeData(item)">{{item.name}}</li>
         </ul>
+        <Spin class="mask" size="large" fix v-if="showMask"></Spin>
     </div>
 </template>
 
@@ -50,6 +51,11 @@
                     // },
                 ],
                 current:[]
+            }
+        },
+        computed:{
+            showMask(){
+                return this.$store.state.ResourceList.main.showMask
             }
         },
         methods:{
@@ -104,7 +110,11 @@
                 background: pink;
                 font-size: 0.8rem;
                 line-height: 2.4rem;
+                cursor: pointer;
             }
+        }
+        .mask{
+            z-index: 10008;
         }
     }
 </style>

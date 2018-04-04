@@ -6,8 +6,9 @@
 </template>
 
 <script>
-    const baseUrl = 'http://61.4.184.177:10088/{z}/{x}/{y}'
+    const baseUrl = 'https://wprd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
     import TOOLS from '../../tools/util'
+    import fs from 'fs'
     export default {
         data(){
             return {
@@ -17,35 +18,64 @@
             }
         },
         computed:{
+            // 地图图层数据
             num(){
                 const _this = this
                 const data = this.$store.state.ResourceList.main.data
                 return data
+            },
+            // 地图数据存储位置
+            mydata(){
+                return this.$store.state.ResourceList.main.dataUrl
             }
         },
         watch: {
             num (newCount, oldCount) {
                 const _this = this
-                _this.group.eachLayer(layer=>{
-                    _this.group.removeLayer(layer)
-                })
-
-                TOOLS.draw(_this.map,_this.group,newCount)
+               if( _this.group){
+                    _this.group.eachLayer(layer=>{
+                        _this.group.removeLayer(layer)
+                    })
+                    TOOLS.draw(_this.map,_this.group,newCount)
+               }
+            },
+            mydata(newData, oldData){
+                const _this = this
+                _this.$store.dispatch("refreshMap",{map:_this.map,url:newData})
             }
         },
         methods:{
             crop(){
                 const _this = this
-                TOOLS.shoot(_this.box,()=>{
+                // 开始照相
+                TOOLS.shoot(_this.box,(mypath)=>{
+                    // 存储照片成功后 ==》 存储当前屏幕数据
+                    const data = _this.$store.state.ResourceList.main.data
+                    const center = _this.map.getCenter()
+                    const zoom = _this.map.getZoom()
+                    const result = {
+                        data,
+                        map:{
+                            center,
+                            zoom
+                        }
+                    }
+                    // 写入数据
+                    fs.writeFile(mypath,JSON.stringify(result),(err,res)=>{
+                        if(err) console.log(err)
+                    })
+                    // 刷新图片列表
                     this.$store.dispatch("refreshIMGS")
                 })
             }
         },
         mounted(){
+            // 初始化地图
             const _this = this
             _this.map = L.map('map').setView([39.9042, 116.4], 5);
             _this.group = L.layerGroup()
             L.tileLayer(baseUrl).addTo(_this.map);
+            // 获取预览窗口大小和位置，为采取图片准备
             const ele = document.querySelector('.preview')
             this.box = {
                 x: ele.offsetLeft,

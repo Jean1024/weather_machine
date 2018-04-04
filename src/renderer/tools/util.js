@@ -6,8 +6,6 @@ const shell = electron.shell
 const path = require('path')
 const fs = require('fs')
 const os = require('os')
-
-const screenshot = document.getElementById('screenshot')
 const imgDir = path.join(os.tmpdir(), 'machine')
 fs.mkdir(imgDir, function (err) {
     if (err) {
@@ -57,14 +55,18 @@ function shoot(obj,cb) {
             const source = sources[0]
             const _t = getTime()
             const screenshotPath = path.join(imgDir, _t + '.png')
+            const JSON_PATH = path.join(imgDir, _t + '.json')
             let image1 = source.thumbnail
             image1 = image1.crop(obj).toPNG([])
             fs.writeFile(screenshotPath, image1, function (error) {
-                if (error) alert('保存图片出错')
+                if (error){
+                    alert('保存图片出错')
+                } else{
+                    cb(JSON_PATH)
+                }
                 // shell.openExternal('file://' + screenshotPath)
                 // shell.showItemInFolder(screenshotPath)
                 // alert(_t + '.png 保存成功!')
-                cb()
             })
         // })
     })

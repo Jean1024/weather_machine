@@ -3,7 +3,9 @@ const fs = require('fs')
 const os = require('os')
 function refresh() {
     const imgDir = path.join(os.tmpdir(), 'machine')
-    const imgs = fs.readdirSync(imgDir)
+    const imgs = fs.readdirSync(imgDir).filter(item=>{
+        return item.indexOf('.png') > -1
+    })
     const arr = []
     imgs.forEach((item, index) => {
         const _path = path.join(imgDir, item)
@@ -24,11 +26,31 @@ const mutations = {
         state.imgs.data = data
     }
 }
-
 const actions = {
     refreshIMGS({ commit }) {
         const arr = refresh()
         commit('ADD_IMG', arr)
+    },
+    delImg({commit},data){
+        data = data.replace('file:///','')
+        const jsonUrl = data.replace('.png','.json')
+        let index = 0
+        fs.unlink(data, function (err) {
+            if (err) return console.log(err);
+            index++
+            if(index === 2){
+                const arr = refresh()
+                commit('ADD_IMG', arr)
+            }
+        })
+        fs.unlink(jsonUrl, function (err) {
+            if (err) return console.log(err); 
+            index++
+            if (index === 2) {
+                const arr = refresh()
+                commit('ADD_IMG', arr)
+            }
+        })
     }
 }
 
