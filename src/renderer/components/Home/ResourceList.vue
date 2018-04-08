@@ -15,6 +15,7 @@
     export default {
         data(){
             return{
+                // 天气数据列表
                 menu:[
                     {
                         title: '降水降温类',
@@ -50,18 +51,22 @@
                     //     arr: ["降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况",]
                     // },
                 ],
+                // 当前展示列表
                 current:[]
             }
         },
         computed:{
+            // 获取遮盖展示状态
             showMask(){
                 return this.$store.state.ResourceList.main.showMask
             }
         },
         methods:{
+            // 切换列表
             tab(item){
                 this.current = item.arr
             },
+            // 获取实时数据
             changeData(data){
                 this.$store.dispatch('someAsyncTask',{data})
             }

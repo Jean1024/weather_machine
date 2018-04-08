@@ -67,6 +67,7 @@
             }
         },
         computed:{
+            // 获取本地文件架下保存的图片列表
             imgs(){
                 return this.$store.state.Preview.imgs.data
             }
@@ -81,16 +82,20 @@
             lunbo(){
                 this.showCarousel = true
             },
+            // 关闭轮播图
             closeCarousel(){
                 this.showCarousel = false
             },
+            // 删除版本
             del(item){
                 this.modal1 = true
                 this.tempData = item
             },
+            // 确定删除
             ok () {
                 this.$store.dispatch('delImg',this.tempData)
             },
+            // 取消删除
             cancel () {
                 
             }        

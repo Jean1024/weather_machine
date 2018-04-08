@@ -30,6 +30,7 @@
             }
         },
         watch: {
+            // 监听图层数据变化
             num (newCount, oldCount) {
                 const _this = this
                if( _this.group){
@@ -39,6 +40,7 @@
                     TOOLS.draw(_this.map,_this.group,newCount)
                }
             },
+            // 监听本地文件地址变化
             mydata(newData, oldData){
                 const _this = this
                 _this.$store.dispatch("refreshMap",{map:_this.map,url:newData})

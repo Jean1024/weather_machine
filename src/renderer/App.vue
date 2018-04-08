@@ -8,6 +8,7 @@
 export default {
   name: 'App',
   created(){
+    // 改变根子体大小，进行rem适配
     !function(win,doc){
         var d=doc.documentElement;
         function change(){
