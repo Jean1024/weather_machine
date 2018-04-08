@@ -19,15 +19,9 @@
                         <Select v-model="options.mode" style="width:100px" size="small">
                             <Option v-for="item in options.modes" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
-                        <!-- <CheckboxGroup v-model="options.modeStatus" class="checkList">
-                            <Checkbox label="xiguo"></Checkbox>
-                        </CheckboxGroup> -->
                     </div>
                     <div>
                         <Button type="ghost" size="small" @click="del(item.img)">删除</Button> 
-                        <!-- <CheckboxGroup v-model="options.modeStatus" class="checkList">
-                            <Checkbox label="sdf"></Checkbox>
-                        </CheckboxGroup> -->
                     </div>       
                 </div>
             </li>
@@ -80,7 +74,7 @@
         methods:{
             // 版本回退
             backto(item){
-                const myurl = item.replace('.png','.json')
+                const myurl = item.replace('.png','.json') + "?t=" + Date.now()
                 this.$store.commit('CHANGE_DATA',myurl)
             },
             // 轮播图

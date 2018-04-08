@@ -72,18 +72,18 @@
         mounted(){
             // 初始化地图
             const _this = this
+            const ele = document.querySelector('.preview')
+            const DPR = window.devicePixelRatio
             _this.map = L.map('map').setView([39.9042, 116.4], 5);
             _this.group = L.layerGroup()
             L.tileLayer(baseUrl).addTo(_this.map);
             // 获取预览窗口大小和位置，为采取图片准备
-            const ele = document.querySelector('.preview')
             this.box = {
-                x: ele.offsetLeft*window.devicePixelRatio,
-                y: ele.offsetTop*window.devicePixelRatio,
-                width: ele.clientWidth*window.devicePixelRatio,
-                height: ele.clientHeight*window.devicePixelRatio
+                x: ele.offsetLeft*DPR,
+                y: ele.offsetTop*DPR,
+                width: ele.clientWidth*DPR,
+                height: ele.clientHeight*DPR
             }
-            console.log(this.box)
         }
     }
 </script>
