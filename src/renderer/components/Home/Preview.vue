@@ -12,7 +12,7 @@
     export default {
         data(){
             return {
-                tip: '截屏',
+                tip: '保存',
                 msg: 'Lorem',
                 box: {}
             }

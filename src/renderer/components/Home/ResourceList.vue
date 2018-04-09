@@ -24,6 +24,7 @@
                                 name:"降水实况",
                                 api: 'js_sk',
                                 url: 'https://decisionappjson.tianqi.cn/js_data/china/precipitation1h.json',
+                                legend: ""
                             },
                             {
                                 name:"温度实况",

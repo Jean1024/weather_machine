@@ -28,7 +28,7 @@
         </ul>
         <div class="carousel" v-if="showCarousel">
             <div class="close" @click="closeCarousel">x</div>
-            <Carousel class="my_carousel" v-model="value1" loop>
+            <Carousel class="my_carousel" v-model="value1">
                 <CarouselItem v-for="(item,index) of imgs" :key="index">
                     <div class="demo-carousel">
                         <img :src="item.img" alt="无法显示">
