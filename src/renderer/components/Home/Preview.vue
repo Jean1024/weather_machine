@@ -2,6 +2,10 @@
     <div class="preview" id="pdf">
         <span class="crop" @click="crop">{{tip}}</span>
         <div id="map"></div>
+        <img v-if="current.legend" :src="current.legend" alt="无法显示" class="legend">
+        <div class="time">
+            {{num.t | formatDate}}
+        </div>
     </div>
 </template>
 
@@ -27,6 +31,10 @@
             // 地图数据存储位置
             mydata(){
                 return this.$store.state.ResourceList.main.dataUrl
+            },
+            // 当前地图数据
+            current(){
+                return this.$store.state.ResourceList.current
             }
         },
         watch: {
@@ -44,6 +52,18 @@
             mydata(newData, oldData){
                 const _this = this
                 _this.$store.dispatch("refreshMap",{map:_this.map,url:newData})
+            },
+            // 监听地图数据变化
+            current(newData,oldData){
+                console.log(newData)
+            }
+        },
+        filters: {
+            formatDate: function (t) {
+               console.log(t)
+               var oDate = new Date(t);
+               console.log(oDate)
+               return oDate
             }
         },
         methods:{
@@ -76,7 +96,7 @@
             const _this = this
             const ele = document.querySelector('.preview')
             const DPR = window.devicePixelRatio
-            _this.map = L.map('map').setView([39.9042, 116.4], 5);
+            _this.map = L.map('map').setView([35.38, 112.24], 4);
             _this.group = L.layerGroup()
             L.tileLayer(baseUrl).addTo(_this.map);
             // 获取预览窗口大小和位置，为采取图片准备
@@ -111,5 +131,13 @@
         #map{
             height: 100%;
         }
+        .legend{
+            width: 24rem;
+            position: absolute;
+            right: 0rem;
+            bottom: 0rem;
+            z-index: 888;
+        }
     }
+    
 </style>

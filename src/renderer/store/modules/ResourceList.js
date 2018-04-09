@@ -3,10 +3,10 @@ const state = {
   main: {
     data:{},
     showMask: false,
-    dataUrl: ''
-  }
+    dataUrl: '',
+  },
+  current:{},
 }
-
 const mutations = {
   INCREMENT_MAIN_COUNTER (state,data) {
     state.main.data = data
@@ -17,11 +17,14 @@ const mutations = {
   CHANGE_DATA(state, data) {
     state.main.dataUrl = data
   },
+  CURRENT_DATA(state,data){
+    state.current = data
+  }
 }
-
 const actions = {
   someAsyncTask ({ commit },{data}) {
     commit('TOGGLE_MASK', true)
+    commit("CURRENT_DATA",data)
     axios.get(data.url)
     .then(res => {
       commit('INCREMENT_MAIN_COUNTER', res.data)

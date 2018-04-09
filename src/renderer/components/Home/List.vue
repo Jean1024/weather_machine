@@ -9,7 +9,7 @@
         <ul>
             <li class="item" v-for="(item,index) of imgs" :key="index">
                 <div class="index">
-                    {{index}}
+                    {{index + 1}}
                 </div>
                 <div class="pic" @click="backto(item.img)">
                     <img :src="item.img" alt="">

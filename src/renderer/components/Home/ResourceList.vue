@@ -2,7 +2,7 @@
     <div class="resource">
         <h4>资源列表</h4>
         <ul class="title">
-            <li v-for="(item,index) of menu" @click="tab(item)" :key="index">{{item.title}}</li>
+            <li v-for="(item,index) of menus" @click="tab(item)" :key="index">{{item.title}}</li>
         </ul>
         <ul class="info">
             <li v-for="(item,index) of current" :key="index" @click="changeData(item)">{{item.name}}</li>
@@ -15,52 +15,34 @@
     export default {
         data(){
             return{
-                // 天气数据列表
-                menu:[
-                    {
-                        title: '降水降温类',
-                        arr: [
-                            {
-                                name:"降水实况",
-                                api: 'js_sk',
-                                url: 'https://decisionappjson.tianqi.cn/js_data/china/precipitation1h.json',
-                                legend: ""
-                            },
-                            {
-                                name:"温度实况",
-                                api: 'wd_sk',
-                                url: 'https://decisionappjson.tianqi.cn/js_data/china/balltemp.json'
-                            },
-                            {
-                                name:"气温预报",
-                                api: 'qw_yb',
-                                url: 'http://decision-171.tianqi.cn/outdata/china/YB024-wdmax.json'
-
-                            },
-                            ]
-                    },
-                    // {
-                    //     title: '雷达云图类',
-                    //     arr: ["降水实况","温度实况","相对温度实况",]
-                    // },
-                    // {
-                    //     title: '空气质量类',
-                    //     arr: ["降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况",]
-                    // },
-                    // {
-                    //     title: '预警及实景类',
-                    //     arr: ["降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况","降水实况","温度实况","相对温度实况",]
-                    // },
-                ],
                 // 当前展示列表
-                current:[]
+                current:[],        
+                menus: [
+                    {
+                    title: '降水降温类',
+                    arr: [
+                        {
+                        name: "降水实况",
+                        api: 'js_sk',
+                        url: 'https://decisionappjson.tianqi.cn/js_data/china/precipitation1h.json',
+                        legend: "http://61.4.184.177:7799/legend/sk/precipitation1h.png"
+                        },
+                        {
+                        name: "温度实况",
+                        api: 'wd_sk',
+                        url: 'https://decisionappjson.tianqi.cn/js_data/china/balltemp.json',
+                        legend: "http://61.4.184.177:7799/legend/sk/sk_wd.png"
+                        },
+                    ]
+                    },
+                ],
             }
         },
         computed:{
             // 获取遮盖展示状态
             showMask(){
                 return this.$store.state.ResourceList.main.showMask
-            }
+            },
         },
         methods:{
             // 切换列表
@@ -73,7 +55,7 @@
             }
         },
         mounted(){
-            this.current = this.menu[0]['arr']
+            this.current = this.menus[0]['arr']
         }
     }
 </script>

@@ -45,4 +45,7 @@ li{
 .right{
   float: right;
 }
+.leaflet-control-container{
+    display: none;
+}
 </style>
