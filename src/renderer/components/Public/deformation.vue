@@ -1,8 +1,15 @@
 <template>
-  <div class="vdr" id="vdr" :class="{ draggable, resizable, active , dragging, resizing}" @dblclick="editme" @mousedown.stop="elmDown" tabindex="0" @keydown.stop="keydown($event)" :style="style">
+  <div class="vdr" :class="{ draggable, resizable, active , dragging, resizing}" 
+      @dblclick="editme" 
+      @mousedown.stop="elmDown" 
+      tabindex="0" 
+      @keydown.stop="keydown($event)" 
+      :style="style">
     <!-- 如果可改变大小为真 -->
     <template v-if="resizable && !disable">
       <!-- 待优化 -->
+      <div class="handle border"></div>
+      <div class="handle handle-top"></div>
       <div class="handle handle-ml" @mousedown.stop.prevent="handleDown('ml')"></div>
       <div class="handle handle-mr" @mousedown.stop.prevent="handleDown('mr')"></div>
       <div class="handle handle-tm" @mousedown.stop.prevent="handleDown('tm')"></div>
@@ -88,7 +95,7 @@
       },
       minh: { // 最小高度
         type: Number,
-        default: 50,
+        default: 20,
         validator: function (val) {
           return val > 0
         }
@@ -351,6 +358,21 @@
     position: absolute;
     z-index: 999;
   }
+  .border{
+    /* z-index: -1; */
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #000;
+    z-index: -1;
+  }
+  .handle-top{
+    width: 100%;
+    height: 20px;
+    top: 0;
+    left: 0;
+    background: #000;
+    transform: translateY(-100%);
+  }
   svg {
     fill: darkslateblue;
   }
@@ -429,7 +451,15 @@
     font-size: 22px;
     overflow: hidden;
   }
-  p{
+  textarea{
+    background: rgba(0, 0, 0, 0);
+    border: 0 none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 880;
     font-size: 1rem;
     font-family: 'Microsoft Yahei';
   }

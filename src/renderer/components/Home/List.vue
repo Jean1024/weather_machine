@@ -17,11 +17,6 @@
                     <img :src="item.img" alt="无法显示">
                 </div>
                 <div class="options">
-                    <!-- <div>
-                        <Select v-model="options.mode" style="width:100px" size="small">
-                            <Option v-for="item in options.modes" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                        </Select>
-                    </div> -->
                     <div>
                         <Button type="ghost" size="small" @click="del(item.img)">删除</Button> 
                     </div>       

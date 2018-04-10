@@ -7,8 +7,8 @@
             <h3>{{current.info}}</h3>
             <p v-if="current.type === 1">{{num.t | formatDate}}</p>
         </div>
-        <Deformation v-for="(item,index) in labels" v-if="item.show" :key="index" @close="item.show = false" class="mylabel" :w="100" :h="100" v-on:dragging="onDrag" v-on:resizing="onResize" :parent="true" @dblclick="item.show = true">
-            <p>请输入内容</p>
+        <Deformation v-for="(item,index) in labels" v-if="item.show" :key="index" @close="item.show = false" class="mylabel" :w="item.style.width" :h="item.style.height" v-on:dragging="onDrag" v-on:resizing="onResize" :parent="true" @dblclick="item.show = true" :x="item.style.x" :y="item.style.y">
+            <textarea @mousedown="typeIn" style="resize:none">请输入内容</textarea>
         </Deformation>
     </div>
 </template>
@@ -77,11 +77,11 @@
                         id: Date.now(),
                         html: "",
                         show: true,
-                        style: {
-                            width: '200px',
-                            height: '50px',
-                            top: '300px',
-                            left: '300px'
+                        style:{
+                            width: 200,
+                            height: 50,
+                            x: 400,
+                            y: 200
                         }
                     })
                     _this.$store.commit('ADD_LABEL',false)
@@ -127,7 +127,7 @@
             onDrag: function (x, y) {
                 this.x = x
                 this.y = y
-            },
+            }, 
         },
         mounted(){
             // 初始化地图
