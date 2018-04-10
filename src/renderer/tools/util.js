@@ -46,6 +46,15 @@ function getTime() {
     var random = ~~(Math.random() * 1000)
     return '' + y + m + d + h + M + s + random
 }
+function addZero(n) { return n >= 10 ? n + '' : '0' + n; }
+//时间函数
+function formatT(s, n = 1) {
+    let t_start = new Date(s)
+    let t_end = new Date(s - 60 * 1000 * 60 * n)
+    const h_start = addZero(t_start.getHours())
+    const h_end = addZero(t_end.getHours())
+    return h_end + '时 - ' + h_start + '时'
+}
 function shoot(obj,cb) {
     const thumbSize = determineScreenShotSize()
     let options = { types: ['screen'], thumbnailSize: thumbSize }
@@ -82,4 +91,5 @@ function determineScreenShotSize() {
 module.exports = {
     draw,
     shoot,
+    formatT
 }

@@ -22,16 +22,20 @@
                     title: '降水降温类',
                     arr: [
                         {
-                        name: "降水实况",
-                        api: 'js_sk',
-                        url: 'https://decisionappjson.tianqi.cn/js_data/china/precipitation1h.json',
-                        legend: "http://61.4.184.177:7799/legend/sk/precipitation1h.png"
+                            name: "降水实况",
+                            api: 'js_sk',
+                            url: 'https://decisionappjson.tianqi.cn/js_data/china/precipitation1h.json',
+                            legend: "http://61.4.184.177:7799/legend/sk/precipitation1h.png",
+                            info: "全国逐小时降水实况",
+                            type: 1,
                         },
                         {
-                        name: "温度实况",
-                        api: 'wd_sk',
-                        url: 'https://decisionappjson.tianqi.cn/js_data/china/balltemp.json',
-                        legend: "http://61.4.184.177:7799/legend/sk/sk_wd.png"
+                            name: "温度实况",
+                            api: 'wd_sk',
+                            url: 'https://decisionappjson.tianqi.cn/js_data/china/balltemp.json',
+                            legend: "http://61.4.184.177:7799/legend/sk/sk_wd.png",
+                            info: "全国逐小时气温实况",
+                            type: 1,
                         },
                     ]
                     },

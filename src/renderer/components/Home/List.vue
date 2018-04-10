@@ -3,7 +3,9 @@
         <div class="title">
             <h2 class="left">播出列表</h2>
             <div class="control right">
-                <button @click="lunbo">轮播</button>
+                <Button type="ghost" size="small" @click="output">全部导出</Button>
+                <Button type="ghost" size="small" @click="lunbo">轮播</Button>
+               <Button type="ghost" size="small" @click="refreshData">刷新数据</Button> 
             </div>
         </div>
         <ul>
@@ -12,14 +14,14 @@
                     {{index + 1}}
                 </div>
                 <div class="pic" @click="backto(item.img)">
-                    <img :src="item.img" alt="">
+                    <img :src="item.img" alt="无法显示">
                 </div>
                 <div class="options">
-                    <div>
+                    <!-- <div>
                         <Select v-model="options.mode" style="width:100px" size="small">
                             <Option v-for="item in options.modes" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
-                    </div>
+                    </div> -->
                     <div>
                         <Button type="ghost" size="small" @click="del(item.img)">删除</Button> 
                     </div>       
@@ -47,6 +49,9 @@
 </template>
 
 <script>
+    const fs =require('fs')
+    const path = require("path")
+    const url = require("url")
     export default {
         data(){
             return{
@@ -64,11 +69,13 @@
                     mode: '联播',
                     modeStatus:[]
                 },
+                myImgs:[]
             }
         },
         computed:{
             // 获取本地文件架下保存的图片列表
             imgs(){
+                // this.myImgs = this.$store.state.Preview.imgs.data
                 return this.$store.state.Preview.imgs.data
             }
         },
@@ -85,6 +92,21 @@
             // 关闭轮播图
             closeCarousel(){
                 this.showCarousel = false
+            },
+            output(){
+                const _this = this
+                const ipc = this.$electron.ipcRenderer
+                ipc.send('open-file-dialog')     
+                ipc.on('selected-directory', function (event, mypath) {
+                    const _path = mypath[0]
+                    _this.imgs.forEach(item=>{
+                        fs.createReadStream(item.img.replace('file:///','')).pipe(fs.createWriteStream(path.join(_path,path.basename(item.img))));
+                    })
+                })
+            },
+            // 刷新数据
+            refreshData(){
+                this.$store.dispatch('refreshData')
             },
             // 删除版本
             del(item){

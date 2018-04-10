@@ -19,11 +19,15 @@ const _arr = refresh()
 const state = {
     imgs: {
         data: _arr
-    }
+    },
+    fz: 16
 }
 const mutations = {
     ADD_IMG(state, data) {
         state.imgs.data = data
+    },
+    CHANGE_FZ(state, data){
+        state.fz = data
     }
 }
 const actions = {

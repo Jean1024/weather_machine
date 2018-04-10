@@ -13,11 +13,7 @@
         </div>
         <div class="text">
             <label for="subtitle">字幕</label>
-            <Select v-model="subtitle.channel" style="width:100px" size="small">
-                <Option v-for="item in subtitle.channels" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-            <Tag closable color="blue" v-for="item of subtitle.labels"  :key="item.value">{{item.value}}</Tag>
-            <Button icon="ios-plus-empty" type="dashed" size="small">添加标签</Button>
+            <Button icon="ios-plus-empty" type="dashed" size="small" @click="addLabel">添加标签</Button>
         </div>
         <div class="background">
             <label for="subtitle">底图</label>
@@ -28,8 +24,10 @@
             <Select v-model="background.color" style="width:100px" size="small">
                 <Option v-for="item in background.colors" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            <Tag closable color="blue" v-for="item of background.hotPlaces"  :key="item.value">{{item.value}}</Tag>
-            <Button icon="ios-plus-empty" type="dashed" size="small">添加标签</Button>
+        </div>
+        <div class="text">
+            <label for="subtitle">图标</label>
+            <Button icon="ios-plus-empty" type="dashed" size="small">添加图标</Button>
         </div>
     </div>
 </template>
@@ -71,36 +69,6 @@
                     fontSize: '18',
                     color: 'rgba(25, 190,107, 1)'
                 },
-                subtitle:{
-                    channels:[
-                        {
-                            value: '气象频道',
-                            label: '气象频道'
-                        },
-                        {
-                            value: '影视频道',
-                            label: '影视频道'
-                        },
-                    ],
-                    channel: '气象频道',
-                    labels:[
-                        {
-                            value:'标题条'
-                        },
-                        {
-                            value:'人名条'
-                        },
-                        {
-                            value:'新闻标题'
-                        },
-                        {
-                            value:'LOGO'
-                        },
-                        {
-                            value:'文本'
-                        }
-                    ]
-                },
                 background:{
                     places:[
                         {
@@ -127,26 +95,15 @@
                         },
 
                     ],
-                    hotPlaces:[
-                        {
-                            value: '北京市',
-                            label: '北京市'
-                        },
-                        {
-                            value: '天津市',
-                            label: '天津市'
-                        },
-                        {
-                            value: '河北省',
-                            label: '河北省'
-                        },
-                    ],
                     color: '深蓝',
                     place: '天津市'
                 }
             }
         },
         methods:{
+            addLabel(){
+                this.$store.commit("ADD_LABEL",true)
+            }
         },
         mounted(){
         }
@@ -180,5 +137,8 @@
                 margin-right: 1rem;
             }
         }
+    }
+    .tools>div{
+        margin-bottom: 0.4rem;
     }
 </style>

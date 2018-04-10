@@ -8,11 +8,13 @@
 export default {
   name: 'App',
   created(){
+    const _this = this
     // 改变根子体大小，进行rem适配
     !function(win,doc){
         var d=doc.documentElement;
         function change(){
             win.fz = d.clientWidth/96
+            _this.$store.commit("CHANGE_FZ",win.fz)
             d.style.fontSize= d.clientWidth/96+'px';
         }
         win.addEventListener('resize',change,false);
