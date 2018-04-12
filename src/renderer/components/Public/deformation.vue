@@ -1,15 +1,14 @@
 <template>
   <div class="vdr" :class="{ draggable, resizable, active , dragging, resizing}" 
-      @dblclick="editme" 
-      @mousedown.stop="elmDown" 
       tabindex="0" 
+      @mousedown="elmDown"
       @keydown.stop="keydown($event)" 
       :style="style">
     <!-- 如果可改变大小为真 -->
     <template v-if="resizable && !disable">
       <!-- 待优化 -->
       <div class="handle border"></div>
-      <div class="handle handle-top"></div>
+      <div class="handle handle-top"  ></div>
       <div class="handle handle-ml" @mousedown.stop.prevent="handleDown('ml')"></div>
       <div class="handle handle-mr" @mousedown.stop.prevent="handleDown('mr')"></div>
       <div class="handle handle-tm" @mousedown.stop.prevent="handleDown('tm')"></div>
@@ -167,18 +166,18 @@
     methods: {
       elmDown (e) { // 组件被按下事件
         // 阻止默认事件
-        e.preventDefault()
+        // e.preventDefault()
         // 判断是否支持键盘微调
         if (this.disable || !this.resizable) return
         const target = e.target || e.srcElement
         // 确保事件发生在组件内部
         if (this.$el.contains(target)) {
           if (!this.active) {
-            this.lastMouseX = e.pageX || e.clientX + document.documentElement.scrollLeft
-            this.lastMouseY = e.pageY || e.clientY + document.documentElement.scrollTop
-            document.documentElement.addEventListener('mousemove', this.handleMove, true)
-            document.documentElement.addEventListener('mousedown', this.deselect, true)
-            document.documentElement.addEventListener('mouseup', this.handleUp, true)
+            this.lastMouseX = e.pageX || e.clientX + document.querySelector('#pdf').scrollLeft
+            this.lastMouseY = e.pageY || e.clientY + document.querySelector('#pdf').scrollTop
+            document.querySelector('#pdf').addEventListener('mousemove', this.handleMove, true)
+            document.querySelector('#pdf').addEventListener('mousedown', this.deselect, true)
+            document.querySelector('#pdf').addEventListener('mouseup', this.handleUp, true)
             this.active = true
             this.$emit('activated')
           }
@@ -192,8 +191,8 @@
         }
       },
       deselect (e) { // 取消选择事件
-        this.mouseX = e.pageX || e.clientX + document.documentElement.scrollLeft
-        this.mouseY = e.pageY || e.clientY + document.documentElement.scrollTop
+        this.mouseX = e.pageX || e.clientX + document.querySelector('#pdf').scrollLeft
+        this.mouseY = e.pageY || e.clientY + document.querySelector('#pdf').scrollTop
         this.lastMouseX = this.mouseX
         this.lastMouseY = this.mouseY
         
@@ -201,9 +200,9 @@
         const regex = new RegExp('handle-([trmbl]{2})', '')
         if (!this.$el.contains(target) && !regex.test(target.className)) {
           if (this.active) {
-            document.documentElement.removeEventListener('mousemove', this.handleMove, true)
-            document.documentElement.removeEventListener('mousedown', this.deselect, true)
-            document.documentElement.removeEventListener('mouseup', this.handleUp, true)
+            document.querySelector('#pdf').removeEventListener('mousemove', this.handleMove, true)
+            document.querySelector('#pdf').removeEventListener('mousedown', this.deselect, true)
+            document.querySelector('#pdf').removeEventListener('mouseup', this.handleUp, true)
             this.active = false
             this.$emit('deactivated')
           }
@@ -215,8 +214,8 @@
         this.resizing = true
       },
       handleMove (e) {
-        this.mouseX = e.pageX || e.clientX + document.documentElement.scrollLeft
-        this.mouseY = e.pageY || e.clientY + document.documentElement.scrollTop
+        this.mouseX = e.pageX || e.clientX + document.querySelector('#pdf').scrollLeft
+        this.mouseY = e.pageY || e.clientY + document.querySelector('#pdf').scrollTop
         // diffX =  当前鼠标位置 - 上次鼠标位置 + ？？
         let diffX = (this.mouseX - this.lastMouseX + this.mouseOffX) / this.zoom
         let diffY = (this.mouseY - this.lastMouseY + this.mouseOffY) / this.zoom
@@ -311,9 +310,6 @@
       close(){
         this.$emit('close')
       },
-      editme(){
-        console.log(123)
-      }
     },
     watch: {
       x (newVal) {
@@ -462,5 +458,8 @@
     z-index: 880;
     font-size: 1rem;
     font-family: 'Microsoft Yahei';
+    border: 0 none;
+  outline:0px none transparent;
+  overflow: hidden;
   }
 </style>

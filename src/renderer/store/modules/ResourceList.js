@@ -5,6 +5,8 @@ const state = {
 		showMask: false,
 		dataUrl: '',
 		addLabel: false,
+		labelname: 0,
+		labels:[]
 	},
 	current: {},
 }
@@ -23,7 +25,11 @@ const mutations = {
 	},
 	// 添加标签
 	ADD_LABEL(state, data) {
+		state.main.labelname ++
 		state.main.addLabel = data
+	},
+	LABEL_DATA(state,data){
+		state.main.labels = data
 	}
 }
 const actions = {
@@ -50,8 +56,11 @@ const actions = {
 		axios.get(data.url)
 			.then(res => {
 				map.setView(res.data.map.center, res.data.map.zoom)
+				// 天气数据
 				commit('CURRENT_DATA', res.data.legends)
 				commit('INCREMENT_MAIN_COUNTER', res.data.data)
+				// 标签数据
+				commit('LABEL_DATA',res.data.labels)
 				commit('TOGGLE_MASK', false)
 			})
 	},

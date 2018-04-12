@@ -3,13 +3,14 @@
         <h4>工具栏</h4>
         <div class="font">
             <label for="font">字体</label>
-            <Select v-model="font.fontFamily" style="width:100px" size="small">
+            <Select v-model="font.fontFamily" style="width:100px" size="small" @on-change="changeFF">
                 <Option v-for="item in font.fontFamilys" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            <Select v-model="font.fontSize" style="width:100px" size="small">
+            <Select v-model="font.fontSize" style="width:100px" size="small" @on-change="changeFZ">
                 <Option v-for="item in font.fontSizes" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            <ColorPicker size="small" v-model="font.color" alpha />
+            <ColorPicker size="small" v-model="font.color" @on-change="changeColor" alpha />
+            <ColorPicker size="small" v-model="font.backgroudColor" @on-change="changeBg" alpha />
         </div>
         <div class="text">
             <label for="subtitle">字幕</label>
@@ -54,20 +55,21 @@
                     fontFamily: '楷体',
                     fontSizes: [
                         {
-                            value: '16',
+                            value: '16px',
                             label: '16号'
                         },
                         {
-                            value: '18',
+                            value: '24px',
                             label: '18号'
                         },
                         {
-                            value: '20',
+                            value: '30px',
                             label: '20号'
                         },
                     ],
-                    fontSize: '18',
-                    color: 'rgba(25, 190,107, 1)'
+                    fontSize: '24px',
+                    color: 'rgba(25, 190,107, 1)',
+                    backgroudColor: 'rgba(25, 190,107, 1)',
                 },
                 background:{
                     places:[
@@ -100,9 +102,24 @@
                 }
             }
         },
+        computed:{
+
+        },
         methods:{
             addLabel(){
                 this.$store.commit("ADD_LABEL",true)
+            },
+            changeFF(ff){
+                this.$store.commit('STYLE_CHANGE',{"fontFamily": ff})
+            },
+            changeFZ(fz){
+                this.$store.commit('STYLE_CHANGE',{"fontSize": fz})
+            },
+            changeColor(color){
+                this.$store.commit('STYLE_CHANGE',{color})
+            },
+            changeBg(bg){
+                this.$store.commit('STYLE_CHANGE',{'backgroundColor': bg})
             }
         },
         mounted(){

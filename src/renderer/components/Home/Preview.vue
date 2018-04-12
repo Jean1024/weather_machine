@@ -7,8 +7,20 @@
             <h3>{{current.info}}</h3>
             <p v-if="current.type === 1">{{num.t | formatDate}}</p>
         </div>
-        <Deformation v-for="(item,index) in labels" v-if="item.show" :key="index" @close="item.show = false" class="mylabel" :w="item.style.width" :h="item.style.height" v-on:dragging="onDrag" v-on:resizing="onResize" :parent="true" @dblclick="item.show = true" :x="item.style.x" :y="item.style.y">
-            <textarea @mousedown="typeIn" style="resize:none">请输入内容</textarea>
+        <Deformation 
+            v-for="(item,index) in labels" 
+            v-if="item.show" :key="index" 
+            @close="item.show = false" 
+            class="mylabel" 
+            :w="item.style.width" 
+            :h="item.style.height" 
+            v-on:dragging="onDrag" 
+            v-on:resizing="onResize" 
+            :parent="true" 
+            @dblclick="item.show = true" 
+            :x="item.style.x" 
+            :y="item.style.y">
+            <div class="mylabel" contenteditable :style="item.textStyle" @mousedown="editme(item)" @blur="blurme">{{item.html}}</div>
         </Deformation>
     </div>
 </template>
@@ -25,8 +37,9 @@
                 myhtml: '<h3>123</h3>',
                 tip: '保存',
                 msg: 'Lorem',
-                box: {},
-                labels:[]
+                box: {}, 
+                labels:[], // 标签集合
+                editingLabel: {},//正在编辑的标签
             }
         },
         computed:{
@@ -48,8 +61,22 @@
             labelStatus(){
                 return this.$store.state.ResourceList.main.addLabel
             },
-            editor() {
-                return this.$refs.myQuillEditor.quill
+            remotelabels(){
+                console.log(this.$store.state.ResourceList.main.labels)
+                return this.$store.state.ResourceList.main.labels
+            },
+            // 文字样式更改
+            fontFamily(){
+                return this.$store.state.tools.style.fontFamily
+            },
+            fontSize(){
+                return this.$store.state.tools.style.fontSize
+            },
+            color(){
+                return this.$store.state.tools.style.color
+            },
+            backgroundColor(){
+                return this.$store.state.tools.style.backgroundColor
             }
         },
         watch: {
@@ -73,19 +100,45 @@
                 const _this = this
                 if(newData){
                     // 添加一个标签
-                    _this.labels.push({
-                        id: Date.now(),
-                        html: "",
-                        show: true,
-                        style:{
+                    const textStyle = {
+                        fontSize: '20px',
+                        color: "rgba(0,0,0,1)",
+                        fontFamily: 'Microsoft Yahei',
+                        backgroundColor: 'rgba(0,0,0,0)'
+                    }
+                    const style = {
                             width: 200,
                             height: 50,
                             x: 400,
                             y: 200
                         }
-                    })
+                    const mylabel = {
+                        id: Date.now(),
+                        html: "请输入内容",
+                        show: true,
+                        style,
+                        textStyle,
+                    }
+                    _this.editingLabel = mylabel
+                    _this.labels.push(mylabel)
                     _this.$store.commit('ADD_LABEL',false)
                 }
+            },
+            remotelabels(newData,oldData){
+                this.labels = JSON.parse(JSON.stringify(newData))
+            },
+            // 修改文字样式
+            fontFamily(newData,oldData){
+                this.editingLabel.textStyle.fontFamily = newData
+            },
+            fontSize(newData,oldData){
+                this.editingLabel.textStyle.fontSize = newData
+            },
+            color(newData,oldData){
+                this.editingLabel.textStyle.color = newData
+            },
+            backgroundColor(newData,oldData){
+                this.editingLabel.textStyle.backgroundColor = newData
             }
         },
         filters: {
@@ -108,7 +161,8 @@
                             center,
                             zoom,
                         },
-                        legends:_this.current
+                        legends:_this.current,
+                        labels: _this.labels
                     }
                     // 写入数据
                     fs.writeFile(mypath,JSON.stringify(result),(err,res)=>{
@@ -119,15 +173,22 @@
                 })
             },
             onResize: function (x, y, width, height) {
-                this.x = x
-                this.y = y
-                this.width = width
-                this.height = height
+                this.editingLabel.style.x = x
+                this.editingLabel.style.y = y
+                this.editingLabel.style.width = width
+                this.editingLabel.style.height = height
             },
             onDrag: function (x, y) {
-                this.x = x
-                this.y = y
+                this.editingLabel.style.x = x
+                this.editingLabel.style.y = y
             }, 
+            // 正在编辑的label样式指向改变
+            editme(item){
+                this.editingLabel = item
+            },
+            blurme(e){
+                this.editingLabel.html = e.srcElement.innerText
+            }
         },
         mounted(){
             // 初始化地图
@@ -203,66 +264,12 @@
                 padding-right: 0.5rem; 
             }
         }
-        ul{
-            li{
-                position: absolute;
-                box-sizing: border-box;
-                width: 10rem;
-                height: 2rem;
-                line-height: 2rem;
-                top: 50%;
-                left: 50%;
-                z-index: 1000;
-                background: pink;
-                padding: 0;
-                margin: 0;
-                border: 1px solid #000;
-                cursor: move;
-                input{
-                    box-sizing: border-box;
-                    padding-left: 0.5rem;
-                    width: 100%;
-                    height: 100%;
-                    margin: 0;
-                    border: 0 none;
-                    outline: 0 none;
-                }
-            }
-        }
         .mylabel{
             z-index: 1000;
-        }  
-        .superText{
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-            z-index: 1002;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            // padding: 10rem;
-            .editer_container{
-                background: #fff;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%,-50%);
-                width: 50%;
-                height: 50%;
-                overflow: hidden;
-            }
-            .control{
-                position: absolute;
-                top: 0;
-                right: 0;
-                padding-right: 0.2rem;
-                z-index: 2;
-                i{
-                    cursor: pointer;
-                }
-            }
-        }
+        }  
+    
     }
     
 </style>
