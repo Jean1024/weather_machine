@@ -34,7 +34,6 @@
         components:{Deformation},
         data(){
             return {
-                myhtml: '<h3>123</h3>',
                 tip: '保存',
                 msg: 'Lorem',
                 box: {}, 
@@ -62,7 +61,6 @@
                 return this.$store.state.ResourceList.main.addLabel
             },
             remotelabels(){
-                console.log(this.$store.state.ResourceList.main.labels)
                 return this.$store.state.ResourceList.main.labels
             },
             // 文字样式更改
@@ -173,10 +171,12 @@
                 })
             },
             onResize: function (x, y, width, height) {
-                this.editingLabel.style.x = x
-                this.editingLabel.style.y = y
-                this.editingLabel.style.width = width
-                this.editingLabel.style.height = height
+                if(this.editingLabel.style){
+                    this.editingLabel.style.x = x
+                    this.editingLabel.style.y = y
+                    this.editingLabel.style.width = width
+                    this.editingLabel.style.height = height
+                }
             },
             onDrag: function (x, y) {
                 this.editingLabel.style.x = x
