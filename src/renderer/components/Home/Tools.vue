@@ -77,11 +77,11 @@ import UploadImage from '../Public/UploadImage'
                 background:{
                     places:[
                         {
-                            value: '世界',
+                            value: 'http://61.4.184.177:7799/data/map/new_zealand.json',
                             label: '世界'
                         },
                         {
-                            value: '中国',
+                            value: 'http://61.4.184.177:7799/data/map/china.json',
                             label: '中国'
                         },
                     ],

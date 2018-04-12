@@ -9,29 +9,36 @@ const state = {
 		labels:[]
 	},
 	current: {},
+    mapStyle:{
+        place: '',
+        fillColor: 'rgba(255,255,255,1)'
+    }
 }
 const mutations = {
-	INCREMENT_MAIN_COUNTER(state, data) {
-		state.main.data = data
-	},
-	TOGGLE_MASK(state, data) {
-		state.main.showMask = data
-	},
-	CHANGE_DATA(state, data) {
-		state.main.dataUrl = data
-	},
-	CURRENT_DATA(state, data) {
-		state.current = data
-	},
-	// 添加标签
-	ADD_LABEL(state, data) {
-		state.main.labelname ++
-		state.main.addLabel = data
-	},
-	LABEL_DATA(state,data){
-		state.main.labels = data
-	}
-}
+  INCREMENT_MAIN_COUNTER(state, data) {
+    state.main.data = data;
+  },
+  TOGGLE_MASK(state, data) {
+    state.main.showMask = data;
+  },
+  CHANGE_DATA(state, data) {
+    state.main.dataUrl = data;
+  },
+  CURRENT_DATA(state, data) {
+    state.current = data;
+  },
+  // 添加标签
+  ADD_LABEL(state, data) {
+    state.main.labelname++;
+    state.main.addLabel = data;
+  },
+  LABEL_DATA(state, data) {
+    state.main.labels = data;
+  },
+  MAP_STYLE_CHANGE(state, data) {
+    state.mapStyle = Object.assign(state.mapStyle, data);
+  }
+};
 const actions = {
 	// 获取接口数据
 	someAsyncTask({
@@ -62,6 +69,8 @@ const actions = {
 				// 标签数据
 				commit('LABEL_DATA',res.data.labels)
 				commit('TOGGLE_MASK', false)
+				// 地图覆盖数据
+				commit("MAP_STYLE_CHANGE", res.data.mapOver?res.data.mapOver:{place:"",fillColor:''});
 			})
 	},
 	// 刷新数据

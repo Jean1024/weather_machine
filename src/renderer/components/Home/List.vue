@@ -5,7 +5,8 @@
             <div class="control right">
                 <Button type="ghost" size="small" @click="output">全部导出</Button>
                 <Button type="ghost" size="small" @click="lunbo">轮播</Button>
-               <Button type="ghost" size="small" @click="refreshData">刷新数据</Button> 
+                <Button type="ghost" size="small" @click="refreshData">刷新数据</Button> 
+                <Button type="ghost" size="small" @click="gobackHome">复位</Button> 
             </div>
         </div>
         <ul>
@@ -115,7 +116,11 @@
             // 取消删除
             cancel () {
                 
-            }        
+            },
+            // 复位
+            gobackHome(){
+                this.$store.commit('CHANGE_DATA','http://61.4.184.177:7799/data/init.json?t='+ Date.now())
+            }     
         }
     }
 </script>

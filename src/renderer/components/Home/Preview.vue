@@ -78,17 +78,28 @@
             },
             backgroundImage(){
                 return this.$store.state.tools.style.backgroundImage
+            },
+            // 地图状态
+            map_position(){
+                return this.$store.state.ResourceList.mapStyle.place
+            },
+            map_fillColor(){
+                return this.$store.state.ResourceList.mapStyle.fillColor
             }
         },
         watch: {
             // 监听图层数据变化
             num (newCount, oldCount) {
                 const _this = this
-                if( _this.group){
+                if( _this.group && newCount.t){
                     _this.group.eachLayer(layer=>{
                         _this.group.removeLayer(layer)
                     })
                     TOOLS.draw(_this.map,_this.group,newCount)
+                }else{
+                    _this.group.eachLayer(layer=>{
+                        _this.group.removeLayer(layer)
+                    })
                 }
             },
             // 监听本地文件地址变化
@@ -144,6 +155,15 @@
             },
             backgroundImage(newData,oldData){
                 this.editingLabel.textStyle.backgroundImage = newData
+            },
+            // 监听地图状态
+            map_position(newData,oldData){
+                const _this = this
+                TOOLS.addOver(_this.map,_this.mapOver,_this.$store.state.ResourceList.mapStyle);
+            },
+            map_fillColor(newData,oldData){
+                const _this = this
+                TOOLS.addOver(_this.map,_this.mapOver,_this.$store.state.ResourceList.mapStyle);
             }
         },
         filters: {
@@ -158,6 +178,7 @@
                 TOOLS.shoot(_this.box,(mypath)=>{
                     // 存储照片成功后 ==》 存储当前屏幕数据
                     const data = _this.$store.state.ResourceList.main.data
+                    const mapOver = _this.$store.state.ResourceList.mapStyle
                     const center = _this.map.getCenter()
                     const zoom = _this.map.getZoom()
                     const result = {
@@ -167,7 +188,8 @@
                             zoom,
                         },
                         legends:_this.current,
-                        labels: _this.labels
+                        labels: _this.labels,
+                        mapOver,
                     }
                     // 写入数据
                     fs.writeFile(mypath,JSON.stringify(result),(err,res)=>{
@@ -194,8 +216,7 @@
                 this.editingLabel = item
             },
             blurme(e){
-                console.log(e.srcElement.innerText)
-                // this.editingLabel.html = e.srcElement.innerText
+                this.editingLabel.html = e.srcElement.innerText
             }
         },
         mounted(){
@@ -205,7 +226,24 @@
             const DPR = window.devicePixelRatio
             _this.map = L.map('map').setView([35.38, 112.24], 4);
             _this.group = L.layerGroup()
+            _this.mapOver = L.layerGroup()
             L.tileLayer(baseUrl).addTo(_this.map);
+            // 旁白
+            // _this.$http.get('http://61.4.184.177:7799/data/map/china.json')
+            // .then(res=>{
+            //     L.geoJson(res.data, {
+            //             // Add invert: true to invert the geometries in the GeoJSON file
+            //             invert: true,
+            //             fillColor: '#fff',
+            //             fillOpacity: 1,
+            //             worldLatLngs: [
+            //                 L.latLng([90, 360]),
+            //                 L.latLng([90, -180]),
+            //                 L.latLng([-90, -180]),
+            //                 L.latLng([-90, 360])
+            //             ]
+            //         }).addTo(_this.map);
+            // })
             // 获取预览窗口大小和位置，为采取图片准备
             this.box = {
                 x: ele.offsetLeft*DPR,

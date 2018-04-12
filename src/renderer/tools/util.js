@@ -7,6 +7,7 @@ const path = require('path')
 const fs = require('fs')
 const os = require('os')
 const imgDir = path.join(os.tmpdir(), 'machine')
+const axios = require('axios')
 fs.mkdir(imgDir, function (err) {
     if (err) {
         // throw err;  
@@ -62,7 +63,7 @@ function shoot(obj,cb) {
         if (error) return console.log(error)
         // sources.forEach(function (source, i) {
             // const myScreen = electronScreen.getPrimaryDisplay()
-        console.log(sources);
+        // console.log(sources);
             
             const source = sources[0]
             const _t = getTime()
@@ -91,8 +92,30 @@ function determineScreenShotSize() {
         height: maxDimension * window.devicePixelRatio
     }
 }
+function addOver(map,group,mydata) {
+    group.eachLayer(layer => {
+      group.removeLayer(layer);
+    });
+    if (mydata.place) {
+        axios.get(mydata.place).then(res => {
+            group.addLayer(L.geoJson(res.data, {
+                invert: true,
+                fillColor: mydata.fillColor,
+                fillOpacity: 1,
+                worldLatLngs: [
+                L.latLng([90, 360]),
+                L.latLng([90, -180]),
+                L.latLng([-90, -180]),
+                L.latLng([-90, 360])
+                ]
+            }));
+            group.addTo(map);
+        });
+    }
+}
 module.exports = {
     draw,
     shoot,
-    formatT
+    formatT,
+    addOver
 }
