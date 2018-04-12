@@ -20,7 +20,7 @@
             @dblclick="item.show = true" 
             :x="item.style.x" 
             :y="item.style.y">
-            <div class="mylabel" contenteditable :style="item.textStyle" @mousedown="editme(item)" @blur="blurme">{{item.html}}</div>
+            <div class="mylabel" contenteditable :style="item.textStyle" @mousedown="editme(item)" @keyup="blurme">{{item.html}}</div>
         </Deformation>
     </div>
 </template>
@@ -75,6 +75,9 @@
             },
             backgroundColor(){
                 return this.$store.state.tools.style.backgroundColor
+            },
+            backgroundImage(){
+                return this.$store.state.tools.style.backgroundImage
             }
         },
         watch: {
@@ -102,7 +105,8 @@
                         fontSize: '20px',
                         color: "rgba(0,0,0,1)",
                         fontFamily: 'Microsoft Yahei',
-                        backgroundColor: 'rgba(0,0,0,0)'
+                        backgroundColor: 'rgba(0,0,0,0)',
+                        backgroundImage: '',
                     }
                     const style = {
                             width: 200,
@@ -137,6 +141,9 @@
             },
             backgroundColor(newData,oldData){
                 this.editingLabel.textStyle.backgroundColor = newData
+            },
+            backgroundImage(newData,oldData){
+                this.editingLabel.textStyle.backgroundImage = newData
             }
         },
         filters: {
@@ -187,7 +194,8 @@
                 this.editingLabel = item
             },
             blurme(e){
-                this.editingLabel.html = e.srcElement.innerText
+                console.log(e.srcElement.innerText)
+                // this.editingLabel.html = e.srcElement.innerText
             }
         },
         mounted(){
@@ -268,6 +276,9 @@
             z-index: 1000;
             width: 100%;
             height: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
         }  
     
     }

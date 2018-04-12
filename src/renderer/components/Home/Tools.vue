@@ -10,7 +10,11 @@
                 <Option v-for="item in font.fontSizes" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
             <ColorPicker size="small" v-model="font.color" @on-change="changeColor" alpha />
+        </div>
+        <div class="text">
+            <label for="subtitle">背景</label>
             <ColorPicker size="small" v-model="font.backgroudColor" @on-change="changeBg" alpha />
+            <UploadImage></UploadImage>
         </div>
         <div class="text">
             <label for="subtitle">字幕</label>
@@ -18,23 +22,22 @@
         </div>
         <div class="background">
             <label for="subtitle">底图</label>
-            <Select v-model="background.place" style="width:100px" size="small">
+            <Select v-model="background.place" style="width:100px" size="small" @on-change="changeMapBg">
                 <Option v-for="item in background.places" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-            
-            <Select v-model="background.color" style="width:100px" size="small">
-                <Option v-for="item in background.colors" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
+            <ColorPicker size="small" v-model="background.color" alpha @on-change="changeMapFillColor"/>
         </div>
-        <div class="text">
+        <!-- <div class="text">
             <label for="subtitle">图标</label>
             <Button icon="ios-plus-empty" type="dashed" size="small">添加图标</Button>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
+import UploadImage from '../Public/UploadImage'
     export default {
+        components:{UploadImage},
         data(){
             return{ 
                 font:{
@@ -74,31 +77,16 @@
                 background:{
                     places:[
                         {
-                            value: '北京市',
-                            label: '北京市'
+                            value: '世界',
+                            label: '世界'
                         },
                         {
-                            value: '天津市',
-                            label: '天津市'
-                        },
-                        {
-                            value: '河北省',
-                            label: '河北省'
+                            value: '中国',
+                            label: '中国'
                         },
                     ],
-                    colors:[
-                        {
-                            value: '深蓝',
-                            label: '深蓝'
-                        },
-                        {
-                            value: '浅黄',
-                            label: '浅黄'
-                        },
-
-                    ],
-                    color: '深蓝',
-                    place: '天津市'
+                    place: '',
+                    color: 'rgba(25, 190,107, 0)'
                 }
             }
         },
@@ -120,7 +108,13 @@
             },
             changeBg(bg){
                 this.$store.commit('STYLE_CHANGE',{'backgroundColor': bg})
-            }
+            },
+            changeMapBg(bg){
+                this.$store.commit('MAP_STYLE_CHANGE',{'place': bg})
+            },
+            changeMapFillColor(bg){
+                this.$store.commit('MAP_STYLE_CHANGE',{'fillColor': bg})
+            },
         },
         mounted(){
         }

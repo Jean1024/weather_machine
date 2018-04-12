@@ -61,6 +61,9 @@ function shoot(obj,cb) {
     desktopCapturer.getSources(options, function (error, sources) {
         if (error) return console.log(error)
         // sources.forEach(function (source, i) {
+            // const myScreen = electronScreen.getPrimaryDisplay()
+        console.log(sources);
+            
             const source = sources[0]
             const _t = getTime()
             const screenshotPath = path.join(imgDir, _t + '.png')
