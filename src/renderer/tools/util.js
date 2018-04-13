@@ -52,9 +52,17 @@ function addZero(n) { return n >= 10 ? n + '' : '0' + n; }
 function formatT(s, n = 1) {
     let t_start = new Date(s)
     let t_end = new Date(s - 60 * 1000 * 60 * n)
-    const h_start = addZero(t_start.getHours())
-    const h_end = addZero(t_end.getHours())
-    return h_end + '时 - ' + h_start + '时'
+    return get_M_D_H(t_end) + " - " + get_M_D_H(t_start);
+}
+function get_M_D_H(myDate) {
+    var y = myDate.getFullYear();
+    var m = myDate.getMonth() + 1;
+    // m = m < 10 ? "0" + m : m;
+    var d = myDate.getDate();
+    // d = d < 10 ? "0" + d : d;
+    var h = myDate.getHours();
+    h = h < 10 ? "0" + h : h;
+    return `${y}年${m}月${d}日${h}时`
 }
 function shoot(obj,cb) {
     const thumbSize = determineScreenShotSize()
